@@ -1,0 +1,11 @@
+{
+    "id": "restusers",
+    "realm": "restusers",
+    "displayName": "Franco Barrera",
+    "enabled": true,
+    "registrationAllowed": true,
+    "loginTheme": "franco-theme",
+    "accountTheme": "keycloak",
+    "adminTheme": "keycloak",
+    "emailTheme": "keycloak"
+}

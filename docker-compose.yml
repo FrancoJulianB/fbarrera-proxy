@@ -1,0 +1,84 @@
+version: '3'
+services:
+  keycloak1:
+    image: quay.io/keycloak/keycloak:19.0.3-legacy
+    container_name: keycloak1
+    environment:
+      # KEYCLOAK_USER: admin
+      # KEYCLOAK_PASSWORD: admin
+      DB_PORT: 5432
+      DB_VENDOR: postgres
+      DB_ADDR: db
+      DB_DATABASE: db_keycloak
+      DB_USER: user_keycloak
+      DB_PASSWORD: pass_keycloak
+      JAVA_OPTS_APPEND: -Dkeycloak.profile.feature.admin2=disabled
+    ports:
+      - "8080:80"
+    restart: always
+    depends_on:
+      - db
+    volumes:
+      - ../keycloak-rest-repo/keycloak-rest-repo/target/keycloak-rest-repo.jar:/opt/jboss/keycloak/standalone/deployments/keycloak-rest-repo.jar
+      - ./custom-scripts/import.sh:/opt/jboss/custom-scripts/import.sh
+      - ./custom-scripts/add_user.sh:/opt/jboss/custom-scripts/add_user.sh
+      - ./startup-scripts/:/opt/jboss/startup-scripts/
+      - ./objects/:/opt/jboss/keycloak/objects/
+      - ./themes/franco-theme:/opt/jboss/keycloak/themes/franco-theme
+
+
+
+  keycloak2:
+    image: quay.io/keycloak/keycloak:19.0.3-legacy
+    container_name: keycloak2
+    environment:
+      # KEYCLOAK_USER: admin
+      # KEYCLOAK_PASSWORD: admin
+      DB_PORT: 5432
+      DB_VENDOR: postgres
+      DB_ADDR: db
+      DB_DATABASE: db_keycloak
+      DB_USER: user_keycloak
+      DB_PASSWORD: pass_keycloak
+      JAVA_OPTS_APPEND: -Dkeycloak.profile.feature.admin2=disabled
+    ports:
+      - "8082:80"
+    restart: always
+    depends_on:
+      - db
+    volumes:
+      - ../keycloak-rest-repo/keycloak-rest-repo/target/keycloak-rest-repo.jar:/opt/jboss/keycloak/standalone/deployments/keycloak-rest-repo.jar
+      - ./custom-scripts/:/opt/jboss/custom-scripts/
+      - ./startup-scripts/:/opt/jboss/startup-scripts/
+      - ./objects/:/opt/jboss/keycloak/objects/
+      - ./themes/franco-theme:/opt/jboss/keycloak/themes/franco-theme
+
+
+  db:
+    image: postgres:15.1
+    restart: always
+    container_name: db_keycloak
+    environment:
+      POSTGRES_DB: db_keycloak
+      POSTGRES_USER: user_keycloak
+      POSTGRES_PASSWORD: pass_keycloak
+    ports:
+      - "5432:5432"
+
+  api:
+    image: identicum/rest-users-api
+    container_name: rest-users-api
+    restart: always
+    ports:
+      - 8081:8081
+
+  proxy:
+    image: nginx:alpine
+    container_name: proxy
+    restart: always
+    volumes:
+      - ./proxy/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+    environment:
+      NGINX_LOG_LEVEL: DEBUG
