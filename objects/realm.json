@@ -4,7 +4,7 @@
     "displayName": "Franco Barrera",
     "enabled": true,
     "registrationAllowed": true,
-    "loginTheme": "franco-theme",
+    "loginTheme": "theme-1",
     "accountTheme": "keycloak",
     "adminTheme": "keycloak",
     "emailTheme": "keycloak"
