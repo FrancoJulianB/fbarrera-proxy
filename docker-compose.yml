@@ -5,9 +5,41 @@ services:
     container_name: proxy
     restart: always
     volumes:
-      - ./website:/website
       - ./proxy/nginx.conf:/etc/nginx/nginx.conf
     ports:
       - 80:80
+    environment:
+      NGINX_LOG_LEVEL: DEBUG
+
+  web1:
+    image: nginx:alpine
+    container_name: web1
+    restart: always
+    volumes:
+      - ./Website/theme1:/usr/share/nginx/html
+    ports:
+      - 8080:80
+    environment:
+      NGINX_LOG_LEVEL: DEBUG
+  
+  web2:
+    image: nginx:alpine
+    container_name: web2
+    restart: always
+    volumes:
+      - ./Website/theme2:/usr/share/nginx/html
+    ports:
+      - 8081:80
+    environment:
+      NGINX_LOG_LEVEL: DEBUG
+  
+  web3:
+    image: nginx:alpine
+    container_name: web3
+    restart: always
+    volumes:
+       - ./Website/theme3:/usr/share/nginx/html
+    ports:
+      - 8082:80
     environment:
       NGINX_LOG_LEVEL: DEBUG
