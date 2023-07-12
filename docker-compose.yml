@@ -16,7 +16,7 @@ services:
     container_name: web1
     restart: always
     volumes:
-      - ./Website/theme1:/usr/share/nginx/html
+      - ./Website/theme1/:/usr/share/nginx/html
     ports:
       - 8080:80
     environment:
@@ -27,7 +27,7 @@ services:
     container_name: web2
     restart: always
     volumes:
-      - ./Website/theme2:/usr/share/nginx/html
+      - ./Website/theme2/:/usr/share/nginx/html
     ports:
       - 8081:80
     environment:
@@ -38,7 +38,7 @@ services:
     container_name: web3
     restart: always
     volumes:
-       - ./Website/theme3:/usr/share/nginx/html
+       - ./Website/theme3/:/usr/share/nginx/html
     ports:
       - 8082:80
     environment:
